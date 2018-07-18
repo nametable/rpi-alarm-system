@@ -1,9 +1,9 @@
 *** WORK ON RASPBERRY PI BELL/ALARM PROJECT ***
 
- [ ] Entire project - approx 5-10 hr (some of which could be educational time where I am learning) \/
+- [ ] Entire project - approx 5-10 hr (some of which could be educational time where I am learning) \/
 
- [ ] Resolve errors/ allow for temporary loss of connectivity -> approx 1 hr
-	[ ] Catch loss of connection and ignore - no crash
+- [ ] Resolve errors/ allow for temporary loss of connectivity -> approx 1 hr
+ - [ ] Catch loss of connection and ignore - no crash
 	[ ] Catch bad google sheet and use previous if possible - no crash
 	[ ] Produce good error info if google sheet is bad or for bad connection
 		[ ] Write to log errors and significant events
