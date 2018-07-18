@@ -47,12 +47,21 @@ function Alarm(time,description,event) {
             this.job=null;
 }
 
-function checkGSheet() 
+
+//This function gets the sheets info and sees if the updated time has changed
+//If connection problem exists, function breaks
+function checkGSheet()
 {
 	doc.getInfo( function( err, sheet_info ){
 	    //console.log( sheet_info.title + ' is loaded' );
 		//console.log( 'Last modified ' + sheet_info.updated );
-		var newUpdate = sheet_info.updated;
+		if (sheet_info!= undefined) //see if info was received
+    {
+      var newUpdate = sheet_info.updated;
+    }else {
+      console.log("Connection problems :(");
+      return;
+    }
 		if ((newUpdate != lastUpdate) || (new Date()).getDay() != curDay )
 		{
 			console.log("Sheet modified ...");
@@ -92,7 +101,7 @@ function processTimes()
 	    parts = s.match(/(\d+)\:(\d+)\:(\d+)/);
 	    if (parts[1]==null){console.log("Bad time." + s);}
 	    else
-	    {	    
+	    {
 		    hours = parseInt(parts[1]);
 		    minutes = parseInt(parts[2]);
 			seconds = parseInt(parts[3]);
@@ -102,7 +111,7 @@ function processTimes()
 			if (d.getTime() > curDate.getTime())
 			{
 				curAlarms.push(new Alarm(d,curRows[i].description, curRows[i].event ));
-				console.log(d + "#" + curAlarms.length);			
+				console.log(d + "#" + curAlarms.length);
 			}else {console.log(d + "has passed");}
 		}
 
