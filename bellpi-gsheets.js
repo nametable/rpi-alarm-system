@@ -99,24 +99,29 @@ function processTimes()
 		d = new Date(Date.now());
 	    s = curRows[i].timecode;
 	    parts = s.match(/(\d+)\:(\d+)\:(\d+)/);
-	    if (parts[1]==null){console.log("Bad time." + s);}
-	    else
-	    {
-		    hours = parseInt(parts[1]);
-		    minutes = parseInt(parts[2]);
-			seconds = parseInt(parts[3]);
-			d.setHours(hours);
-			d.setMinutes(minutes);
-			d.setSeconds(seconds);
-			if (d.getTime() > curDate.getTime())
-			{
-				curAlarms.push(new Alarm(d,curRows[i].description, curRows[i].event ));
-				console.log(d + "#" + curAlarms.length);
-			}else {console.log(d + "has passed");}
+      if (parts!=null)
+      {
+        if (parts[1]!=null)
+        {
+          hours = parseInt(parts[1]);
+          minutes = parseInt(parts[2]);
+          seconds = parseInt(parts[3]);
+          d.setHours(hours);
+          d.setMinutes(minutes);
+          d.setSeconds(seconds);
+          if (d.getTime() > curDate.getTime())
+          {
+            curAlarms.push(new Alarm(d,curRows[i].description, curRows[i].event ));
+            console.log(d + "#" + curAlarms.length);
+          }else {console.log(d + "has passed");}
+        } else
+        {console.log("warning: Bad time." + s);}
+      } else
+      {
+        console.log("warning: No time or bad time...");
+      }
 		}
-
-	}
-	console.log("Done Processing Times ...");
+	console.log("message: Done Processing Times ...");
 }
 function toastAlarms() //remove the old alarms safely with jobs
 {
