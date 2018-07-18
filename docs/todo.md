@@ -1,4 +1,4 @@
-#WORK ON RASPBERRY PI BELL/ALARM PROJECT
+# WORK ON RASPBERRY PI BELL/ALARM PROJECT
 
 - [ ] Entire project - approx 5-10 hr (some of which could be educational time where I am learning) \/
 
