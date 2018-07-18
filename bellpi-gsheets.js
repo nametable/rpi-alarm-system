@@ -15,29 +15,6 @@ var curDay;
 
 doc.useServiceAccountAuth(creds, function (err) {
 
-/*	doc.getInfo( function( err, sheet_info ){
-	    console.log( sheet_info.title + ' is loaded' );
-		console.log( 'Last modified ' + sheet_info.updated );
-		console.log( 'Owned by ' + sheet_info.author.name + '(' + sheet_info.author.email + ')' );
-
-		// Get all of the rows from the spreadsheet.
-		doc.getRows(2, function (err, rows) {
-			//console.log(rows);
-			curRows=rows;
-			console.log("There are " + curRows.length + " entries.");
-			console.log("The time is " + curRows[0].time);
-			console.log(curRows[0].description);
-			console.log(curRows[0].event);
-			console.log("Date() -" + curRows[0].timecode + " - " + Date(curRows[0].timecode));
-			if (curRows[0].event == "103")
-			{
-				bells.startbuzz();
-			}else {bells.endbuzz();}
-			//console.log(curRows[0]);
-		});
-	});*/
-
-
 });
 
 function Alarm(time,description,event) {
@@ -59,7 +36,7 @@ function checkGSheet()
     {
       var newUpdate = sheet_info.updated;
     }else {
-      console.log("Connection problems :(");
+      console.warn("warning: Connection problems :(");
       return;
     }
 		if ((newUpdate != lastUpdate) || (new Date()).getDay() != curDay )
@@ -70,9 +47,6 @@ function checkGSheet()
 				//console.log(rows);
 				curRows=rows;
 				console.log("There are " + curRows.length + " entries.");
-				console.log("The time is " + curRows[0].time);
-				console.log(curRows[0].description);
-				console.log(curRows[0].event);
 				if (curRows[0].event == "103")
 				{
 					bells.startbuzz();
@@ -115,10 +89,10 @@ function processTimes()
             console.log(d + "#" + curAlarms.length);
           }else {console.log(d + "has passed");}
         } else
-        {console.log("warning: Bad time." + s);}
+        {console.warn("warning: Bad time." + s);}
       } else
       {
-        console.log("warning: No time or bad time...");
+        console.warn("warning: No time or bad time...");
       }
 		}
 	console.log("message: Done Processing Times ...");
