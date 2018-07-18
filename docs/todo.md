@@ -4,7 +4,7 @@
 
 - [ ] Resolve errors/ allow for temporary loss of connectivity -> approx 1 hr
   - [X] Catch loss of connection and ignore - no crash
-  - [ ] Catch bad google sheet and use previous if possible - no crash
+  - [X] Catch bad google sheet and use previous if possible - no crash
   - [ ] Produce good error info if google sheet is bad or for bad connection
   - [ ] Write to log errors and significant events
 
