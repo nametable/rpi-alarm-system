@@ -51,24 +51,24 @@ function checkGSheet()
 				{
 					bells.startbuzz();
 				}else {bells.endbuzz();}
-				//console.log(curRows[0]);
-				if (curAlarms != null)toastAlarms();
+				//console.log(curRows[0])
 				processTimes();
 				scheduleAlarms();
 			});
 		}
 		lastUpdate = newUpdate;
-		//console.log( 'Owned by ' + sheet_info.author.name + '(' + sheet_info.author.email + ')' );
 	});
 }
 
 function processTimes()
 {
 	console.log("Processing Times ...");
+  if(curRows[0].timecode==null){console.error("Error: gsheet problem -> can't get timecode");return;}
 	var curDate = new Date();
 	console.log(curDate + "#Cur");
 	var d;
-	curAlarms=new Array();
+  if (curAlarms != null)toastAlarms();
+  curAlarms=new Array();
 	for (var i = 0; i < curRows.length; i++) {
 		d = new Date(Date.now());
 	    s = curRows[i].timecode;
@@ -110,7 +110,7 @@ function toastAlarms() //remove the old alarms safely with jobs
 }
 function scheduleAlarms() //schedule the new alarms // curAlarms[i].time //new Date(Date.now() + 5000)
 {
-
+  if (curAlarms==undefined){console.error("Error: no defined alarms");return;}
 	for (var i = 0; i < curAlarms.length; i++) {
 		curAlarms[i].job=new schedule.scheduleJob(curAlarms[i].time, function(y){
 		  console.log("Alarm: " + y.description + " @ " + y.time);
