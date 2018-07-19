@@ -1,0 +1,33 @@
+{
+  "name": "rpi-alarm-system",
+  "version": "1.0.0",
+  "description": "A system by which a raspberry pi can play alarms set using Google Sheets.",
+  "main": "bellpi-gsheets.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "dependencies": {
+    "google-spreadsheet": "^2.0.5",
+    "node-schedule": "^1.3.0",
+    "onoff": "^3.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "./bellpi-gsheets.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nametable/rpi-alarm-system.git"
+  },
+  "keywords": [
+    "raspberrypi",
+    "googleapis",
+    "alarm"
+  ],
+  "author": "Logan T Bateman",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/nametable/rpi-alarm-system/issues"
+  },
+  "homepage": "https://github.com/nametable/rpi-alarm-system#readme"
+}
