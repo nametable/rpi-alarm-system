@@ -47,6 +47,7 @@ function checkGSheet()
 				//console.log(rows);
 				curRows=rows;
 				console.log("There are " + curRows.length + " entries.");
+				if (curRows.length==0)return;
 				if (curRows[0].event == "103")
 				{
 					bells.startbuzz();
