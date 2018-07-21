@@ -34,7 +34,7 @@ exports.ring = function ()
 exports.endbuzz = function () { //function to stop blinking
   if (typeof BUZZER !== 'undefined' && BUZZER)
   {
-  	clearInterval(buzzInterval); // Stop blink intervals
+  	clearInterval(buzzInterval); // Stop blink interval
 		console.log("debug: endbuzz");
   	BUZZER.writeSync(1); // Turn LED off
 		console.log("debug: buzz ended");
