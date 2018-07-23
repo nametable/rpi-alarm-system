@@ -1,5 +1,6 @@
 {
-  "update_frequency":"5",
+  "update_frequency":5,
   "master_control_gsheet_id":"",
-  "gsheet_id":"1B_a2jyFjPp3bM88imgewEcvyNyENBpgIqIXn18i2m_c"
+  "master_folder_id":"",
+  "master_backup_schedule_id":"1B_a2jyFjPp3bM88imgewEcvyNyENBpgIqIXn18i2m_c"
 }
