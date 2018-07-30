@@ -23,4 +23,8 @@ jwtClient.authorize(function (err, tokens) {
    console.log("Successfully connected!");
  }
 });
-sheet_maker.mk_control_sheet(jwtClient, {sheetId:"11EDYwgZH5qx9sybk0V0RAC9CSkXvzvYhy0HBTZ8IxdA"});
+var resp=sheet_maker.mk_control_sheet(jwtClient, {sheetId:"11EDYwgZH5qx9sybk0V0RAC9CSkXvzvYhy0HBTZ8IxdA"});
+var resp_value;
+resp.then(function(response){
+  resp_value=response;
+});
