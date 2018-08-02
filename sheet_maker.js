@@ -108,8 +108,8 @@ module.exports = class sheet_maker{
                     "sheetId": sheetCounter,
                     //"startRowIndex": 0,
                     //"endRowIndex": 10,
-                    "startColumnIndex": 1,
-                    "endColumnIndex": 2
+                    "startColumnIndex": 0,
+                    "endColumnIndex": 1
                   },
                   "cell": {
                     "userEnteredFormat": {
