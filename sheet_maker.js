@@ -1,8 +1,6 @@
 const {google} = require('googleapis');
 const sheet_reader= require('./sheet_reader.js');
-const dow_list=[
-  "SUN","MON","TUE","WED","THU","FRI","SAT"
-];
+require('./constants.js');
 
 var sheets = google.sheets('v4');
 module.exports = class sheet_maker{
@@ -32,7 +30,7 @@ module.exports = class sheet_maker{
         //Do this when sheets have been deleted
         delSheets.then(function(response){
           console.log("Old sheets deleted.");
-          var readSpreadsheet= sheet_reader.readSheet(jwtClient, spreadsheetId);
+          var readSpreadsheet= sheet_reader.readSpreadsheet(jwtClient, spreadsheetId);
           //Procede with this once spreadsheet is read
           readSpreadsheet.then(function(response){
             var spreadsheet=response;
@@ -148,15 +146,153 @@ module.exports = class sheet_maker{
     });
     return resp;
   }
-  mk_control_spreadsheet(jwtClient, sheetId)
+  static mk_control_spreadsheet(jwtClient, options)
   {
+    var mastercontrolcsv;
+    var resp= new Promise(function(resolve, reject){
+      fs.readFile('emptycontrolsheet.csv', 'ascii', function(err, data){
+        mastercontrolcsv=data;
+        var delSheets;
+        if (options.spreadsheetId) //resets a sheet to the master_control_sheet
+        {
+            var spreadsheetId=options.spreadsheetId;
+            delSheets=sheet_maker.del_sheets_from_spreadsheet(jwtClient, spreadsheetId);
+        }
+        else if (options.folderId) {
+          sheets.spreadsheets.create({
+            auth: jwtClient,
+            resource: {
+              title: "MasterControlSheet"
+            }
+          }, function (err, response){
+            var spreadsheetId=response.fileId;
+          });
+        }
+        //https://www.youtube.com/watch?v=86q5TMzvRqo
+        //Do this when sheets have been deleted
+        delSheets.then(function(response){
+          console.log("Old sheets deleted.");
+          var readSpreadsheet= sheet_reader.readSpreadsheet(jwtClient, spreadsheetId);
+          //Procede with this once spreadsheet is read
+          readSpreadsheet.then(function(response){
+            var spreadsheet=response;
+            var err1;
+            //console.log("First sheet");
+            //console.log(spreadsheet.data.sheets[0].properties.sheetId);//
+            var requests= [];
+            var requestCounter=0;
+            var sheetCounter=0;
+            //Add and new sheet and name it
+            requests[requestCounter++]={
+              "addSheet":
+              {
+                "properties":{
+                  sheetId: sheetCounter,
+                  index: sheetCounter,
+                  title: "MASTER"
+                }
+              }
+            };
+            //add data to sheet
+            requests[requestCounter++]={
+              "pasteData": {
+                "coordinate": {
+                  "sheetId":sheetCounter,
+                  "rowIndex":0,
+                  "columnIndex":0
+                },
+                "data": mastercontrolcsv,
+                "type": "PASTE_NORMAL",
 
+                // Union field kind can be only one of the following:
+                "delimiter": ','
+                //"html": false
+                // End of list of possible types for union field kind.
+              }
+            };
+            //Bold the top row
+            requests[requestCounter++]={
+              "repeatCell": {
+                "range": {
+                    "sheetId": sheetCounter,
+                    "startRowIndex": 0,
+                    "endRowIndex": 1
+                },
+                "cell": {
+                    "userEnteredFormat": {
+                        "textFormat": {
+                            "bold": true
+                        }
+                    }
+                },
+                "fields": "userEnteredFormat.textFormat.bold"
+              }
+            };
+            //Freeze top row
+            requests[requestCounter++]={
+              updateSheetProperties: {
+                properties: {
+                  "sheetId": sheetCounter,
+                  "title":"NUM0",
+                  gridProperties: {
+                    frozenRowCount: 1
+                  }
+                },
+                fields: "(gridProperties.frozenRowCount)"
+              }
+            };
+            //Set column to be in time format hh:mm:ss
+            requests[requestCounter++]={
+              "repeatCell": {
+                "range": {
+                  "sheetId": sheetCounter,
+                  //"startRowIndex": 0,
+                  //"endRowIndex": 10,
+                  "startColumnIndex": 0,
+                  "endColumnIndex": 1
+                },
+                "cell": {
+                  "userEnteredFormat": {
+                    "numberFormat": {
+                      "type": "TIME",
+                      "pattern": "hh:mm:ss"
+                    }
+                  }
+                },
+                "fields": "userEnteredFormat.numberFormat"
+              }
+            };
+            //Delete the sheet that was unused from the beginning
+            requests[requestCounter++]= {
+              "deleteSheet":{
+                "sheetId": spreadsheet.data.sheets[0].properties.sheetId
+              }
+            }
+            console.log(requests);
+            sheets.spreadsheets.batchUpdate({
+              auth:jwtClient,
+              spreadsheetId: spreadsheetId,
+              resource:{
+                "requests": requests
+              }
+            },
+            function (err, response)
+            {
+              console.log(err);
+              //console.log(response);
+              resolve(response);
+            });
+          });
+        });
+      });
+    });
+    return resp;
   }
   static del_sheets_from_spreadsheet(jwtClient, spreadsheetId)
   {
     var resp= new Promise(function(resolve, reject){
       var spreadsheet;
-      var readSpreadsheet= sheet_reader.readSheet(jwtClient, spreadsheetId);
+      var readSpreadsheet= sheet_reader.readSpreadsheet(jwtClient, spreadsheetId);
       readSpreadsheet.then(function(response){
         spreadsheet=response;
         console.log("Current sheet data\n");
