@@ -8,12 +8,14 @@
 const {google} = require('googleapis');
 const constants = require('./constants.js');
 var sheets = google.sheets('v4');
+var drive = google.drive('v3');
 module.exports = class sheet_reader{
-  static readSpreadsheet(jwtClient, sheetId)
+  //gets basic spreadsheet info - not very useful
+  static readSpreadsheet(jwtClient, spreadsheetId)
   {
     var resp=new Promise(function(resolve, reject){
       sheets.spreadsheets.get({
-        spreadsheetId: sheetId,
+        spreadsheetId: spreadsheetId,
         auth: jwtClient
       },
       function(err, response)
@@ -52,7 +54,6 @@ module.exports = class sheet_reader{
           switch(response.data.values[0][columnNumber]){
             case 'Time':
               colTime=columnNumber;
-              console.log("There was a time");
               break;
             case 'Event':
               colEvent=columnNumber;
@@ -63,11 +64,6 @@ module.exports = class sheet_reader{
             default:
           }
         };
-        console.log(response.data.values);
-        console.log(colTime);
-        console.log(colEvent);
-        console.log(colDescription);
-        console.log("Columns: " + colTime.toString() + colEvent.toString() + colDescription.toString());
         for(var rowNumber=1; rowNumber<response.data.values.length; rowNumber++){
           eventList[rowNumber-1]={};
           if (colTime!=undefined)eventList[rowNumber-1].Time=response.data.values[rowNumber][colTime];
@@ -75,6 +71,44 @@ module.exports = class sheet_reader{
           if (colDescription!=undefined)eventList[rowNumber-1].Description=response.data.values[rowNumber][colDescription];
         };
         resolve(eventList);
+      });
+    });
+  }
+  //Returns settings from a control spreadsheet
+  static getControlSheetSettings(jwtClient, spreadsheetId){
+    return new Promise(function(resolve, reject){
+      var controlSheetSettings=[];
+      controlSheetSettings.schedules=[];
+      controlSheetSettings.calendars=[];
+      var readSheetData=sheet_reader.readSheet(jwtClient, spreadsheetId, "CONTROL");
+      readSheetData.then(function(response){
+        //crash and burn if no values come back from sheet read
+        if(response.data.values==undefined){reject();}
+        for (var rowCounter=3; rowCounter<response.data.values.length; rowCounter++){
+          if(response.data.values[rowCounter][1]){
+            controlSheetSettings.schedules[response.data.values[rowCounter][1]]=response.data.values[rowCounter][0];
+          }
+          if(response.data.values[rowCounter][3]){
+            controlSheetSettings.calendars[response.data.values[rowCounter][3]]=response.data.values[rowCounter][2];
+          }
+        }
+        controlSheetSettings.curCal=response.data.values[1][2];
+        controlSheetSettings.blankDaySchedule=response.data.values[1][3];
+        resolve(controlSheetSettings);
+      });
+    });
+  }
+  //Returns the timestamp from a file in GoogleDrive, including spreadsheets, docs, etc
+  static getModifiedTimestamp(jwtClient, spreadsheetId){
+    return new Promise(function(resolve, reject){
+      drive.files.get({
+        auth: jwtClient,
+        fileId: spreadsheetId,
+        fields: "modifiedTime"
+      },function(err, response){
+        console.log(err);
+        if(response){resolve(response.data.modifiedTime)}
+        else if (err) {reject(err)}
       });
     });
   }
