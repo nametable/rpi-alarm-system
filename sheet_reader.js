@@ -46,24 +46,33 @@ module.exports = class sheet_reader{
 
       var readSheetData=sheet_reader.readSheet(jwtClient, spreadsheetId, weekday);
       readSheetData.then(function(response){
-        var eventList;
+        var eventList=[];
         var colTime, colEvent, colDescription;
-        for(var columnNumber; columnNumber<response.data.values[0].length; columnNumber++){
+        for(var columnNumber=0; columnNumber<response.data.values[0].length; columnNumber++){
           switch(response.data.values[0][columnNumber]){
-            case "Time":
+            case 'Time':
               colTime=columnNumber;
+              console.log("There was a time");
               break;
-            case "Event":
+            case 'Event':
               colEvent=columnNumber;
               break;
-            case "Description":
+            case 'Description':
               colDescription=columnNumber;
               break;
             default:
           }
         };
+        console.log(response.data.values);
+        console.log(colTime);
+        console.log(colEvent);
+        console.log(colDescription);
+        console.log("Columns: " + colTime.toString() + colEvent.toString() + colDescription.toString());
         for(var rowNumber=1; rowNumber<response.data.values.length; rowNumber++){
-
+          eventList[rowNumber-1]={};
+          if (colTime!=undefined)eventList[rowNumber-1].Time=response.data.values[rowNumber][colTime];
+          if (colEvent!=undefined)eventList[rowNumber-1].Event=response.data.values[rowNumber][colEvent];
+          if (colDescription!=undefined)eventList[rowNumber-1].Description=response.data.values[rowNumber][colDescription];
         };
         resolve(eventList);
       });
