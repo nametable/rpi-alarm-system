@@ -2,7 +2,7 @@
   "name": "rpi-alarm-system",
   "version": "1.0.0",
   "description": "A system by which a raspberry pi can play alarms set using Google Sheets.",
-  "main": "bellpi-gsheets.js",
+  "main": "index.js",
   "directories": {
     "doc": "docs"
   },
