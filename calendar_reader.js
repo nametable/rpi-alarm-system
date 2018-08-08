@@ -11,10 +11,8 @@ module.exports= class calendar_reader{
     return new Promise(function(resolve, reject){
       //(yesterday=new Date()).setDate((new Date()).getDate()-1);
       var resp;
-      var minDate=new Date(date);
-      var maxDate=new Date(date);
-      minDate.setHours(0); minDate.setMinutes(0); minDate.setSeconds(0);
-      maxDate.setHours(23); maxDate.setHours(59); maxDate.setSeconds(59);
+      var minDate=Date.today().at("12:00am");
+      var maxDate=Date.today().at("11:59pm");
       calendar.events.list({
          auth: jwtClient,
          calendarId: calendarId,
