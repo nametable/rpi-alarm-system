@@ -106,7 +106,6 @@ module.exports = class sheet_reader{
         fileId: spreadsheetId,
         fields: "modifiedTime"
       },function(err, response){
-        console.log(err);
         if(response){resolve(response.data.modifiedTime)}
         else if (err) {reject(err)}
       });
