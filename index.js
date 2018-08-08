@@ -214,7 +214,9 @@ var whatNext= function()
 function toastAlarms() //remove the old alarms safely with jobs
 {
 	for (var i = 0; i < currentAlarmList.length; i++) {
-		//currentAlarmList[i].Job.cancel();
+    if(currentAlarmList[i].Job){
+      currentAlarmList[i].Job.cancel();
+    }
 		currentAlarmList[i].Job=null;
 	}
 	currentAlarmList=[];
@@ -237,7 +239,11 @@ function scheduleAlarms() //schedule the new alarms // curAlarms[i].time //new D
       //bells.ring();
       //cmd.run('mpg123 whistle.mp3; espeak "'+ alarm.Description + 'The time is' + alarm.Time + '"');
     }.bind(null,currentAlarmList[i]));
-    console.log(JobTime + "#" + i + " - " + currentAlarmList[i].Description + " -> " + currentAlarmList[i].Event);
+    if(JobTime < Date.now()){
+      console.log("<" + JobTime + "#" + i + " - " + currentAlarmList[i].Description + " -> " + currentAlarmList[i].Event);
+    }else{
+      console.log(">" + JobTime + "#" + i + " - " + currentAlarmList[i].Description + " -> " + currentAlarmList[i].Event);
+    }
 	}
 	//console.log(curAlarms[0].time.getHours());
 	//console.log(Date(Date.now() + 5000));
