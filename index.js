@@ -188,8 +188,6 @@ var whatNext= function()
           if(newScheduleFromCalendar!=lastUsedSchedule){
             console.log("New schedule from calendar to get...");
             lastUsedSchedule=newScheduleFromCalendar;
-            needsupdateSchedule=true;
-            whatNext();
           }
         }else{
           //If there is no schedule on the calendar and the master control sheet specifies a backup
@@ -200,9 +198,9 @@ var whatNext= function()
               lastUsedSchedule=currentControlSettings.blankDaySchedule;
             }
           }
-          needsupdateSchedule=true;
-          whatNext();
         }
+        needsupdateSchedule=true;
+        whatNext();
       }).catch(function(error){
         console.error("Problem reading calendar with id " + lastUsedCalendar + " -> " + error);
       });
