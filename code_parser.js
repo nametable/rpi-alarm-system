@@ -10,7 +10,7 @@ module.exports= class code_parser {
       var calendarId=control_settings.calendars[varname];
       if(scheduleId){return scheduleId};
       if(calendarId){return calendarId};
-    }else{return undefined;}
+    }else{return identifier;}
   }
   static getScheduleFromCalendarEvents(calEventList, control_settings){
     var calEventsSplit=[];
