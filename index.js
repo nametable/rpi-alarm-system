@@ -12,6 +12,9 @@ let sheet_reader = require('./sheet_reader.js');
 let calendar_reader = require('./calendar_reader.js');
 let code_parser = require('./code_parser.js');
 let privatekey = require("./google-apis-test-04121b34e74e.json");
+require('datejs');
+
+var schedule = require('node-schedule');
 
 var settings={};
 //from http://isd-soft.com/tech_blog/accessing-google-apis-using-service-account-node-js/
@@ -51,13 +54,14 @@ var resp_value;
 resp.then(function(response) {
   resp_value = response;
 });
-
+var currentDay=Date.today(); //today
 var lastTimestampControl; //timestamp of MasterControl Spreadsheet
 var lastTimestampSchedule;//timestamp of Schedule spreadsheet
 var lastUsedSchedule;     //id of last used schedule
 var lastUsedCalendar;     //id of last used calendar
 var currentEvents;        //current events in the calendar for today
-var currentAlarmList;     //current alarms from last used schedule
+var currentAlarmList=[];     //current alarms from last used schedule
+var newAlarmList=[];         //new alarms to be set
 var currentControlSettings;//current settings from control sheet
 var confirmedMasterControl=false, confirmedCalendar=false, confirmedSchedule=false;
 var needsupdateMasterControl=false, needsupdateCalendar=false, needsupdateSchedule=false;
@@ -66,6 +70,7 @@ setInterval(function () { //main function which repeats every x seconds, specifi
   console.log("Rechecking...");
   confirmedMasterControl=false, confirmedCalendar=false, confirmedSchedule=false;
   needsupdateMasterControl=true, needsupdateCalendar=false, needsupdateSchedule=false;
+  rescheduleNeeded=false; //Until proven needed
   whatNext();
 
 }, settings.refreshRate*1000);
@@ -75,7 +80,8 @@ var whatNext= function()
 {
   if(!(needsupdateMasterControl | needsupdateCalendar | needsupdateSchedule) && (confirmedMasterControl && confirmedCalendar && confirmedSchedule)){
     if(rescheduleNeeded){
-
+      toastAlarms();
+      scheduleAlarms();
     }
   }else{
     if(needsupdateMasterControl){
@@ -140,23 +146,25 @@ var whatNext= function()
       needsupdateSchedule=false;
       var checkTimestampSchedule=sheet_reader.getModifiedTimestamp(jwtClient, code_parser.getId(lastUsedSchedule, currentControlSettings))
       checkTimestampSchedule.then(function(response){
-        if(response!=lastTimestampSchedule){
+        console.log("Last modified " + response);
+        if((response!=lastTimestampSchedule)|(currentDay.getDay()!=Date.today().getDay())){ 
           confirmedSchedule=true;
           var getNewAlarms=sheet_reader.getEventList(jwtClient, code_parser.getId(lastUsedSchedule, currentControlSettings), new Date())
+          lastTimestampSchedule=response;
           getNewAlarms.then(function(response){
             console.log("New schedule differs - alarm rescheduling needed")
             rescheduleNeeded=true;
-            currentAlarmList=response;
+            newAlarmList=response;
             whatNext();
-          }).catch(function(err){
-            console.err("Couldn't get alarms from schedule -> " + error);
+          }).catch(function(error){
+            console.error("Couldn't get alarms from schedule -> " + error);
           });
         }
       }).catch(function(error){
         console.error("Error: can't get schedule sheet timestamp! -> " + error);
-        if(config.backupSchedule){
+        if(config.master_backup_schedule_id){
           console.log("Trying to load backup schedule in config");
-          lastUsedSchedule=config.backupSchedule;
+          lastUsedSchedule=config.master_backup_schedule_id;
           needsupdateSchedule=true;
           whatNext();
         }else{
@@ -188,12 +196,12 @@ var whatNext= function()
           if(currentControlSettings.blankDaySchedule){
             console.log("Using backup schedule")
             if (currentControlSettings.blankDaySchedule!=lastUsedSchedule){
-              console.log("Going to load in backup schedule");
+              console.log("Going to load in backup schedule: new");
               lastUsedSchedule=currentControlSettings.blankDaySchedule;
-              needsupdateSchedule=true;
-              whatNext();
             }
           }
+          needsupdateSchedule=true;
+          whatNext();
         }
       }).catch(function(error){
         console.error("Problem reading calendar with id " + lastUsedCalendar + " -> " + error);
@@ -202,4 +210,37 @@ var whatNext= function()
     }
     //whatNext();
   }
+}
+function toastAlarms() //remove the old alarms safely with jobs
+{
+	for (var i = 0; i < currentAlarmList.length; i++) {
+		//currentAlarmList[i].Job.cancel();
+		currentAlarmList[i].Job=null;
+	}
+	currentAlarmList=null;
+	schedule = null;
+	schedule = new require('node-schedule');
+	console.log("Old alarms toasted...");
+}
+function scheduleAlarms() //schedule the new alarms // curAlarms[i].time //new Date(Date.now() + 5000)
+{
+  currentAlarmList=Object.assign({}, newAlarmList);
+  currentAlarmList.length=newAlarmList.length;
+  currentDay=Date.today();
+  if (currentAlarmList==[]){console.log("Warning: no defined alarms");return;}
+	for (var i = 0; i < currentAlarmList.length; i++) {
+    var JobTime=new Date.today().at(currentAlarmList[i].Time);
+		currentAlarmList[i].Job=new schedule.scheduleJob(JobTime, function(alarm){
+      console.log("Alarm: " + alarm.Description + " @ " + alarm.Time + " -> " + alarm.Event);
+      //console.log(y);
+      //bells.ring();
+      //cmd.run('mpg123 whistle.mp3; espeak "'+ alarm.Description + 'The time is' + alarm.Time + '"');
+    }.bind(null,currentAlarmList[i]));
+    console.log(JobTime + "#" + i + " - " + currentAlarmList[i].Description + " -> " + currentAlarmList[i].Event);
+	}
+	//console.log(curAlarms[0].time.getHours());
+	//console.log(Date(Date.now() + 5000));
+	//console.log(curAlarms[0].job);
+	//console.log(curAlarms[0].job.nextInvocation());
+	console.log("New alarms scheduled...");
 }
