@@ -20,17 +20,35 @@ function buzz() { //function to start blinking
   }
 }
 
-exports.ring = function ()
+var ringSequence;
+var ringSeqCounter;
+exports.ring = function (params)
 {
+	ringSequence=params;
+	ringSeqCounter=0;
 	if (BUZZER == null)
 	{
 		BUZZER = new Gpio(buzzer_pin, 'out');
 	}
 	console.log("debug: startbuzz");
-	BUZZER.writeSync(0)
-	setTimeout(exports.endbuzz, 2000); //stop blinking after 30 seconds
+	console.log("debug: params -> " + params.length);
+	ringStartStop();
+	//setTimeout(exports.endbuzz, 2000); //stop blinking after 30 seconds
 }
-
+function ringStartStop(){
+	
+	if(ringSeqCounter % 2 ==0){
+		BUZZER.writeSync(0)
+	}else{
+		BUZZER.writeSync(1)
+	}
+	ringSeqCounter++;
+	if(ringSeqCounter==ringSequence.length){
+		exports.endbuzz();
+	}else{
+		setTimeout(ringStartStop, Math.trunc(parseFloat(ringSequence[ringSeqCounter-1]))*1000);
+	}
+}
 exports.endbuzz = function () { //function to stop blinking
   if (typeof BUZZER !== 'undefined' && BUZZER)
   {
