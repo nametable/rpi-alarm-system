@@ -32,11 +32,12 @@ exports.ring = function (params)
 	}
 	console.log("debug: startbuzz");
 	console.log("debug: params -> " + params.length);
+	console.log(ringSequence);
 	ringStartStop();
 	//setTimeout(exports.endbuzz, 2000); //stop blinking after 30 seconds
 }
 function ringStartStop(){
-	
+	console.log("start stop #" + ringSeqCounter + " - time -> "+ Math.trunc(parseFloat(ringSequence[ringSeqCounter]))*1000);
 	if(ringSeqCounter % 2 ==0){
 		BUZZER.writeSync(0)
 	}else{
@@ -46,7 +47,7 @@ function ringStartStop(){
 	if(ringSeqCounter==ringSequence.length){
 		exports.endbuzz();
 	}else{
-		setTimeout(ringStartStop, Math.trunc(parseFloat(ringSequence[ringSeqCounter-1]))*1000);
+		setTimeout(ringStartStop, Math.trunc(parseFloat(ringSequence[ringSeqCounter-1])*1000));
 	}
 }
 exports.endbuzz = function () { //function to stop blinking
