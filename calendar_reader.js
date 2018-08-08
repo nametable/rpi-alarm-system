@@ -24,7 +24,6 @@ module.exports= class calendar_reader{
          timeMax: maxDate.toISOString()
       }, function (err, response) {
          if (err) {
-             console.log('The API returned an error: ' + err);
              reject(err);
          }
          if(response)resolve(response.data.items); //this would be the list of events
