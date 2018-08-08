@@ -146,7 +146,7 @@ var whatNext= function()
       needsupdateSchedule=false;
       var checkTimestampSchedule=sheet_reader.getModifiedTimestamp(jwtClient, code_parser.getId(lastUsedSchedule, currentControlSettings))
       checkTimestampSchedule.then(function(response){
-        console.log("Last modified " + response);
+        //console.log("Last modified " + response);
         if((response!=lastTimestampSchedule)|(currentDay.getDay()!=Date.today().getDay())){ 
           confirmedSchedule=true;
           var getNewAlarms=sheet_reader.getEventList(jwtClient, code_parser.getId(lastUsedSchedule, currentControlSettings), new Date())
