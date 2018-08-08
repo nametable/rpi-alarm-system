@@ -16,6 +16,7 @@ require('datejs');
 
 var schedule = require('node-schedule');
 var http = require('http');
+var events= require('./events.js');
 
 var settings={};
 //from http://isd-soft.com/tech_blog/accessing-google-apis-using-service-account-node-js/
@@ -41,7 +42,7 @@ settings.backupSchedule=config.master_backup_schedule_id;
 settings.controlSheet=config.master_control_gsheet_id;
 settings.refreshRate=config.update_frequency;
 settings.folder=config.master_folder_id;
-
+//*** Various tests of functions I made
 //var resp=sheet_maker.mk_schedule_spreadsheet(jwtClient, {spreadsheetId:"11EDYwgZH5qx9sybk0V0RAC9CSkXvzvYhy0HBTZ8IxdA"});
 //var resp=sheet_maker.mk_control_spreadsheet(jwtClient, {spreadsheetId:"11EDYwgZH5qx9sybk0V0RAC9CSkXvzvYhy0HBTZ8IxdA"});
 //var resp=sheet_reader.readSpreadsheet(jwtClient, "11EDYwgZH5qx9sybk0V0RAC9CSkXvzvYhy0HBTZ8IxdA");
@@ -231,6 +232,7 @@ function scheduleAlarms() //schedule the new alarms // curAlarms[i].time //new D
     var JobTime=new Date.today().at(currentAlarmList[i].Time);
 		currentAlarmList[i].Job=new schedule.scheduleJob(JobTime, function(alarm){
       console.log("Alarm: " + alarm.Description + " @ " + alarm.Time + " -> " + alarm.Event);
+      events.execute(alarm.Event);
       //console.log(y);
       //bells.ring();
       //cmd.run('mpg123 whistle.mp3; espeak "'+ alarm.Description + 'The time is' + alarm.Time + '"');
