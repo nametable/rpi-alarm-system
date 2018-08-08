@@ -17,23 +17,25 @@ module.exports= class code_parser {
     var highestVal=0;
     var highestIndex=0;
     for(var calEventCounter=0;calEventCounter< calEventList.length; calEventCounter++){
-      if(calEventList[calEventCounter].summary.indexOf("#")!=-1){
-        calEventsSplit[calEventCounter]=calEventList[calEventCounter].summary.split("#");
-        if (parseInt(calEventsSplit[calEventCounter][0])>=highestVal){
-          highestVal=parseInt(calEventsSplit[calEventCounter][0]);
-          highestIndex=calEventCounter;
+      if(calEventList[calEventCounter].description){ //Check to see if there is a description
+        if(calEventList[calEventCounter].description.indexOf("#")!=-1){
+          calEventsSplit[calEventCounter]=calEventList[calEventCounter].description.split("#");
+          if (parseInt(calEventsSplit[calEventCounter][0])>=highestVal){
+            highestVal=parseInt(calEventsSplit[calEventCounter][0]);
+            highestIndex=calEventCounter;
+          }
         }
-      }
-      if(calEventList[calEventCounter].summary.indexOf("$")!=-1){
-        calEventsSplit[calEventCounter]=calEventList[calEventCounter].summary.split("$");
-        calEventsSplit[calEventCounter][1]=control_settings.calendars[calEventsSplit[calEventCounter][1]];
-        if (parseInt(calEventsSplit[calEventCounter][0])>=highestVal){
-          highestVal=parseInt(calEventsSplit[calEventCounter][0]);
-          highestIndex=calEventCounter;
+        if(calEventList[calEventCounter].description.indexOf("$")!=-1){
+          calEventsSplit[calEventCounter]=calEventList[calEventCounter].description.split("$");
+          calEventsSplit[calEventCounter][1]=control_settings.schedules[calEventsSplit[calEventCounter][1]];
+          if (parseInt(calEventsSplit[calEventCounter][0])>=highestVal){
+            highestVal=parseInt(calEventsSplit[calEventCounter][0]);
+            highestIndex=calEventCounter;
+          }
         }
       }
     }
-    if(calEventsSplit=[]){console.error("Bad calendar event list... no schedule found.");return null}else{if (!calEventsSplit[highestIndex][1]){return null;}}
+    if(calEventsSplit[highestIndex][1]==undefined){console.error("Bad calendar event list... no schedule found.");return null}else{if (!calEventsSplit[highestIndex][1]){return null;}}
     return this.getId(calEventsSplit[highestIndex][1],control_settings)
   }
 }
