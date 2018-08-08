@@ -213,12 +213,10 @@ var whatNext= function()
 }
 function toastAlarms() //remove the old alarms safely with jobs
 {
-	for (var i = 0; i < currentAlarmList.length; i++) {
-    if(currentAlarmList[i].Job){
-      currentAlarmList[i].Job.cancel();
-    }
-		currentAlarmList[i].Job=null;
-	}
+	for (var i = 0; i < schedule.scheduledJobs.length; i++) {
+    schedule.scheduledJobs[i].cancel();
+  }
+  schedule.scheduledJobs=[];
 	currentAlarmList=[];
 	schedule = null;
 	schedule = new require('node-schedule');
