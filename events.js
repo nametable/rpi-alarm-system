@@ -5,6 +5,10 @@ module.exports = class events{
     static execute(event){
         var action_param_split;
         var params;
+        if(!event){
+            console.log("Error, this alarm has no event");
+            return;
+        }
         if(event.indexOf("@")!=-1){
             action_param_split= event.split("@");
             params= action_param_split[1].split(",");
@@ -25,7 +29,7 @@ module.exports = class events{
                 case "eSpeak":
                     this.eSpeak(params);
                     break;
-                case "setVolume"(params):
+                case "setVolume":
                     break;
                 case "combo":
                     this.comboEvent(params);
@@ -50,6 +54,9 @@ module.exports = class events{
 
     }
     static eSpeak(params){
+
+    }
+    static setVolume(params){
 
     }
     static comboEvent(params){
