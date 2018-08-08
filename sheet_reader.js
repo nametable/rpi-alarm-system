@@ -42,10 +42,7 @@ module.exports = class sheet_reader{
   //Return a list of events from a Schedule spreadsheet based on sheetid and date
   static getEventList(jwtClient, spreadsheetId, date){
     return new Promise(function(resolve, reject){
-      console.log(constants.dow_list);
       var weekday=constants.dow_list[date.getDay()];
-      console.log("Today is " + weekday);
-
       var readSheetData=sheet_reader.readSheet(jwtClient, spreadsheetId, weekday);
       readSheetData.then(function(response){
         var eventList=[];
