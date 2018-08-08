@@ -15,6 +15,7 @@ let privatekey = require("./google-apis-test-04121b34e74e.json");
 require('datejs');
 
 var schedule = require('node-schedule');
+var http = require('http');
 
 var settings={};
 //from http://isd-soft.com/tech_blog/accessing-google-apis-using-service-account-node-js/
@@ -215,15 +216,15 @@ function toastAlarms() //remove the old alarms safely with jobs
 		//currentAlarmList[i].Job.cancel();
 		currentAlarmList[i].Job=null;
 	}
-	currentAlarmList=null;
+	currentAlarmList=[];
 	schedule = null;
 	schedule = new require('node-schedule');
 	console.log("Old alarms toasted...");
 }
 function scheduleAlarms() //schedule the new alarms // curAlarms[i].time //new Date(Date.now() + 5000)
 {
-  currentAlarmList=Object.assign({}, newAlarmList);
-  currentAlarmList.length=newAlarmList.length;
+  currentAlarmList=newAlarmList;//Object.assign({}, newAlarmList);
+  //currentAlarmList.length=newAlarmList.length;
   currentDay=Date.today();
   if (currentAlarmList==[]){console.log("Warning: no defined alarms");return;}
 	for (var i = 0; i < currentAlarmList.length; i++) {
@@ -242,3 +243,11 @@ function scheduleAlarms() //schedule the new alarms // curAlarms[i].time //new D
 	//console.log(curAlarms[0].job.nextInvocation());
 	console.log("New alarms scheduled...");
 }
+http.createServer(function(req, res){
+  var Message;
+  currentAlarmList.forEach(alarm => {
+    Message+="Alarm: " + alarm.Description + " @ " + alarm.Time + " -> " + alarm.Event + "\n";
+  });
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end(Message);
+}).listen(8080);
