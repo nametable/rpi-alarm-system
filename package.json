@@ -10,6 +10,7 @@
     "datejs": "^1.0.0-rc3",
     "google-spreadsheet": "^2.0.5",
     "googleapis": "^32.0.0",
+    "node-cmd": "^3.0.0",
     "node-schedule": "^1.3.0",
     "onoff": "^3.1.0"
   },
