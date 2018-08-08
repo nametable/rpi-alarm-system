@@ -25,6 +25,8 @@ module.exports = class events{
                 case "eSpeak":
                     this.eSpeak(params);
                     break;
+                case "setVolume"(params):
+                    break;
                 case "combo":
                     this.comboEvent(params);
                     break;
@@ -37,7 +39,9 @@ module.exports = class events{
         bells.ring(params);
     }
     static playYoutube(params){
-
+        //This will find the audio stream of a youtube video and play it with cvlc
+        //cvlc "$(/usr/local/bin/youtube-dl -f 140 -g https://www.youtube.com/watch?v=nQWFzMvCfLE)"
+        cmd.run('cvlc "$(youtube-dl -f 140 -g ' + params[1] + ')"');
     }
     static playAudioFile(params){
 
