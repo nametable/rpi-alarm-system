@@ -5,8 +5,8 @@ module.exports = class events{
     static execute(event){
         var action_param_split;
         var params;
-        if(event.indexOf(":")!=-1){
-            action_param_split= event.split(":");
+        if(event.indexOf("@")!=-1){
+            action_param_split= event.split("@");
             params= action_param_split[1].split(",");
             console.log(params);
             switch(action_param_split[0]){
@@ -41,7 +41,7 @@ module.exports = class events{
     static playYoutube(params){
         //This will find the audio stream of a youtube video and play it with cvlc
         //cvlc "$(/usr/local/bin/youtube-dl -f 140 -g https://www.youtube.com/watch?v=nQWFzMvCfLE)"
-        cmd.run('cvlc "$(youtube-dl -f 140 -g ' + params[1] + ')"');
+        cmd.run('cvlc "$(youtube-dl -f 140 -g ' + params[0] + ')"');
     }
     static playAudioFile(params){
 
