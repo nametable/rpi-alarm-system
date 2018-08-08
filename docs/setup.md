@@ -11,4 +11,6 @@
 nodejs, npm, pm2, git
 
 - Download the repository
+```bash
 git clone 
+```
