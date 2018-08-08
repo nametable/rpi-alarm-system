@@ -6,6 +6,8 @@
 */
 "use strict";
 const {google} = require('googleapis');
+const _ = require('lodash');
+
 let config = require('./config.json');
 let sheet_maker = require('./sheet_maker.js');
 let sheet_reader = require('./sheet_reader.js');
@@ -213,9 +215,12 @@ var whatNext= function()
 }
 function toastAlarms() //remove the old alarms safely with jobs
 {
-	for (var i = 0; i < schedule.scheduledJobs.length; i++) {
-    schedule.scheduledJobs[i].cancel();
-  }
+	// for (var i = 0; i < schedule.scheduledJobs.length; i++) {
+  //   schedule.scheduledJobs[i].cancel();
+  // }
+  //https://stackoverflow.com/questions/39925701/how-to-delete-all-schedules-in-node-schedule
+  const jobNames = _.keys(schedule.scheduledJobs);
+  for(let name of jobNames) schedule.cancelJob(name);
   schedule.scheduledJobs=[];
 	currentAlarmList=[];
 	schedule = null;
