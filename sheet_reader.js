@@ -43,10 +43,6 @@ module.exports = class sheet_reader{
   static getEventList(jwtClient, spreadsheetId, date){
     return new Promise(function(resolve, reject){
       var weekday=constants.dow_list[date.getDay()];
-<<<<<<< HEAD
-=======
-
->>>>>>> 58bfcfc3978c55b17d60066167f28663d7a65a35
       var readSheetData=sheet_reader.readSheet(jwtClient, spreadsheetId, weekday);
       readSheetData.then(function(response){
         var eventList=[];
