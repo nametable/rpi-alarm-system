@@ -8,6 +8,9 @@ sudo apt update
 sudo apt -y dist-upgrade
 #Install git, vlc, node, espeak
 sudo apt -y install nodejs git vlc espeak
+#Setup time correctly
+sudo timedatectl set-timezone America/Detroit
+sudo timedatectl set-ntp true
 #Clone the projects repo to home directory
 git clone https://github.com/nametable/rpi-alarm-system.git
 cd rpi-alarm-system
@@ -19,3 +22,4 @@ pm2 save
 pm2 stop 0
 echo "You will need to place your download your auth key as 'serviceaccountkey.js'"
 echo "You will also need to configure 'config.json'. Use config.json.sample to help"
+echo "More detailed instructions are at "
