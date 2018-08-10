@@ -30,6 +30,7 @@ module.exports = class events{
                     this.eSpeak(params);
                     break;
                 case "setVolume":
+                    this.setVolume(params);
                     break;
                 case "combo":
                     this.comboEvent(params);
@@ -45,21 +46,31 @@ module.exports = class events{
     static playYoutube(params){
         //This will find the audio stream of a youtube video and play it with cvlc
         //cvlc "$(/usr/local/bin/youtube-dl -f 140 -g https://www.youtube.com/watch?v=nQWFzMvCfLE)"
-        cmd.run('cvlc "$(youtube-dl -f 140 -g ' + params[0] + ')"');
+        var cmdstring='cvlc "$(youtube-dl -f 140 -g ' + params[0] + ')"';
+        cmd.run(cmdstring);
+        console.log("Running -> " + cmdstring);
     }
     static playAudioFile(params){
-        cmd.run('cvlc "~/Music/' + params[0] + '"');
+        var cmdstring='cvlc "~/Music/' + params[0] + '"';
+        cmd.run(cmdstring);
+        console.log("Running -> " + cmdstring);
     }
     static updateSystem(params){
-        cmd.run('sudo apt update && sudo apt upgrade');
+        var cmdstring='sudo apt update && sudo apt upgrade';
+        cmd.run(cmdstring);
+        console.log("Running -> " + cmdstring);
     }
     static eSpeak(params){
-        cmd.run('espeak "' + params[0] + '"');
+        var cmdstring='espeak "' + params[0] + '"';
+        cmd.run(cmdstring);
+        console.log("Running -> " + cmdstring);
     }
     static setVolume(params){
-        cmd.run('amixer set \'PCM\' ' + params[0]);
+        var cmdstring='amixer set PCM ' + params[0] + ' -M';
+        cmd.run(cmdstring);
+        console.log("Running -> " + cmdstring);
     }
     static comboEvent(params){
-
+        //yet to be implemented
     }
 }
