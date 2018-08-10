@@ -32,8 +32,8 @@ module.exports = class events{
                 case "setVolume":
                     this.setVolume(params);
                     break;
-                case "stopMusic":
-                    this.stopMusic(params);
+                case "stopAudio":
+                    this.stopAudio(params);
                     break;
                 case "combo":
                     this.comboEvent(params);
@@ -73,7 +73,7 @@ module.exports = class events{
         cmd.run(cmdstring);
         console.log("Running -> " + cmdstring);
     }
-    static stopMusic(params){
+    static stopAudio(params){
         var cmdstring='killall vlc';
         cmd.run(cmdstring);
         console.log("Running -> " + cmdstring);
