@@ -5,7 +5,7 @@ cd
 curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 #Update apt cache
 sudo apt update
-sudo apt dist-upgrade
+sudo apt -y dist-upgrade
 #Install git, vlc, node
 sudo apy install -y nodejs git vlc
 #Clone the projects repo to home directory
