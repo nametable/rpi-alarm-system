@@ -82,7 +82,7 @@ module.exports = class events{
     }
     static comboEvent(params){
         //yet to be implemented
-        eventsList= params.split("^");
+        var eventsList= params[0].split("^");
         eventsList.forEach(event => {
             this.execute(event)
         });
