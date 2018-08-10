@@ -13,7 +13,10 @@
 *.mp3
 
 core
+config.json
 package-lock.json
 bellscheduler.json
+serviceaccountkey.json
+
 logs
 node_modules/
