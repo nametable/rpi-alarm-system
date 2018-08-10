@@ -13,7 +13,7 @@ let sheet_maker = require('./sheet_maker.js');
 let sheet_reader = require('./sheet_reader.js');
 let calendar_reader = require('./calendar_reader.js');
 let code_parser = require('./code_parser.js');
-let privatekey = require("./google-apis-test-04121b34e74e.json");
+let privatekey = require("./serviceaccountkey.json");
 require('datejs');
 
 const schedule = require('node-schedule');
