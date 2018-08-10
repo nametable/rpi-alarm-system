@@ -45,7 +45,7 @@ function ringStartStop(){
 	}
 	ringSeqCounter++;
 	if(ringSeqCounter==ringSequence.length){
-		exports.endbuzz();
+		setTimeout(exports.endbuzz, Math.trunc(parseFloat(ringSequence[ringSeqCounter-1])*1000));
 	}else{
 		setTimeout(ringStartStop, Math.trunc(parseFloat(ringSequence[ringSeqCounter-1])*1000));
 	}
