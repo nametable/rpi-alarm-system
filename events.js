@@ -54,7 +54,7 @@ module.exports = class events{
         console.log("Running -> " + cmdstring);
     }
     static playAudioFile(params){
-        var cmdstring='cvlc "~/Music/' + params[0] + '"';
+        var cmdstring='cvlc ~/"Music/' + params[0] + '"';
         cmd.run(cmdstring);
         console.log("Running -> " + cmdstring);
     }
