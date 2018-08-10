@@ -1,8 +1,7 @@
 # Hardware and software setup
-## Hardware
 
-### Materials
-- Raspberry pi 3
+## Materials
+- Raspberry pi 3 (a 2 might work)
 - Relay
 - Dupont connectors
 
