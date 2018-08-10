@@ -12,6 +12,7 @@
 - pm2
 - git
 - vlc
+- espeak
 
 ## Instructions
 
