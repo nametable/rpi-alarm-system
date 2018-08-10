@@ -12,7 +12,7 @@ sudo apt -y install nodejs git vlc
 git clone https://github.com/nametable/rpi-alarm-system.git
 cd rpi-alarm-system
 npm install .
-npm install pm2@latest -g
+sudo npm install pm2@latest -g
 pm2 start index.js --name rpi-alarm-system
 `pm2 startup`
 pm2 save
