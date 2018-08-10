@@ -32,6 +32,9 @@ module.exports = class events{
                 case "setVolume":
                     this.setVolume(params);
                     break;
+                case "stopMusic":
+                    this.stopMusic(params);
+                    break;
                 case "combo":
                     this.comboEvent(params);
                     break;
@@ -67,6 +70,11 @@ module.exports = class events{
     }
     static setVolume(params){
         var cmdstring='amixer set PCM ' + params[0] + ' -M';
+        cmd.run(cmdstring);
+        console.log("Running -> " + cmdstring);
+    }
+    static stopMusic(params){
+        var cmdstring='killall vlc';
         cmd.run(cmdstring);
         console.log("Running -> " + cmdstring);
     }
