@@ -13,15 +13,21 @@
 - git
 - vlc
 
-1. Download the repository
-```bash
-git clone github.com/nametable/rpi-alarm-system.git
+## Instructions
+
+1. Run the following script by pasting this into a terminal
 ```
-2. Install nodejs modules (make sure you are in the downloaded git repo folder)
-```bash
-npm install .
+bash <(curl -s https://raw.githubusercontent.com/nametable/rpi-alarm-system/master/setupscripts/install.sh)
 ```
-3. Create a Project @ console.cloud.google.com
-4. Create a Google Service account @  https://console.cloud.google.com/iam-admin/serviceaccounts
-5. Create and download a service account key to use on the pi - don't lose this @ https://console.cloud.google.com/apis/credentials
-.. Copy service account key to your the repo folder as **serviceaccountkey.json**
+2. Create a Project at console.cloud.google.com
+3. Create a Google Service account @  https://console.cloud.google.com/iam-admin/serviceaccounts
+4. Create and download a service account key to use on the pi - don't lose this @ https://console.cloud.google.com/apis/credentials
+.. Copy service account key to the program's folder as **serviceaccountkey.json**
+5. Create a **config.json** file in the program's folder using config.json.sample. In this file you can set the refresh time interval, master control gsheet id, and backup schedule gsheet id.
+6. Make schedules by uploading the template sheet TemplateSchedule.xlsx and converting to Google Sheets.
+7. Make master control by uploading the template sheet TemplateMasterControl.xlsx and converting to Google Sheet.
+8. Configure your sheets and master control with info here -> {insert url}
+9. Make a new Google Calendar for scheduling
+10. Share all sheets and the calendar with your Google Service account - you should put your sheets in one folder so that the whole folder can be shared.
+11. Run "pm2 start rpi-alarm-system" to start the software.
+12. Create a github issue at github.com/nametable/rpi-alarm-system if you have problems, find bugs, or have improvement suggestions.
