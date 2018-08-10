@@ -7,8 +7,11 @@
 - Dupont connectors
 
 ## Software
-- Install the following
-nodejs, npm, pm2, git
+- nodejs
+- npm
+- pm2
+- git
+- vlc
 
 1. Download the repository
 ```bash
