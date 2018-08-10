@@ -10,7 +10,7 @@ module.exports = class events{
             return;
         }
         if(event.indexOf("@")!=-1){
-            action_param_split= event.split("@");
+            action_param_split= event.split(/@(.+)/); //split("@");
             params= action_param_split[1].split(",");
             console.log(params);
             switch(action_param_split[0]){
@@ -64,7 +64,9 @@ module.exports = class events{
         console.log("Running -> " + cmdstring);
     }
     static eSpeak(params){
+        params[0].replace("$time", getAmPmTime);
         var cmdstring='espeak "' + params[0] + '"';
+        cmd.run(cmdstring);
         cmd.run(cmdstring);
         console.log("Running -> " + cmdstring);
     }
@@ -80,5 +82,16 @@ module.exports = class events{
     }
     static comboEvent(params){
         //yet to be implemented
+        eventsList= params.split("^");
+        eventsList.forEach(event => {
+            this.execute(event)
+        });
+    }
+}
+getAmPmTime = function(){
+    if ((new Date()).getHours()<12){
+        return (new Date()).getHours() + ":" + (new Date()).getMinutes() + "am";
+    }else{
+        return ((new Date()).getHours()-12) + ":" + (new Date()).getMinutes() + "pm";
     }
 }
