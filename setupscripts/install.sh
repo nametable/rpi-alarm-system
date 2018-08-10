@@ -1,11 +1,11 @@
 #!/bin/bash
 #Change to home directory
 cd
+#Add node 10 to the apt list
+curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 #Update apt cache
 sudo apt update
 sudo apt dist-upgrade
-#Add node 10 to the apt list
-curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 #Install git, vlc, node
 sudo apy install -y nodejs git vlc
 #Clone the projects repo to home directory
