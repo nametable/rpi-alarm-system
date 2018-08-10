@@ -64,7 +64,7 @@ module.exports = class events{
         console.log("Running -> " + cmdstring);
     }
     static eSpeak(params){
-        params[0].replace("$time", getAmPmTime);
+        params[0]=params[0].replace("$time", getAmPmTime);
         var cmdstring='espeak "' + params[0] + '"';
         cmd.run(cmdstring);
         cmd.run(cmdstring);
