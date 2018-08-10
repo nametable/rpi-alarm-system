@@ -20,7 +20,7 @@
 ```
 bash <(curl -s https://raw.githubusercontent.com/nametable/rpi-alarm-system/master/setupscripts/install.sh)
 ```
-2. Create a Project at console.cloud.google.com
+2. Create a Project at https://console.cloud.google.com
 3. Create a Google Service account @  https://console.cloud.google.com/iam-admin/serviceaccounts
 4. Create and download a service account key to use on the pi - don't lose this @ https://console.cloud.google.com/apis/credentials
 .. Copy service account key to the program's folder as **serviceaccountkey.json**
@@ -31,4 +31,4 @@ bash <(curl -s https://raw.githubusercontent.com/nametable/rpi-alarm-system/mast
 9. Make a new Google Calendar for scheduling
 10. Share all sheets and the calendar with your Google Service account - you should put your sheets in one folder so that the whole folder can be shared.
 11. Run "pm2 start rpi-alarm-system" to start the software.
-12. Create a github issue at github.com/nametable/rpi-alarm-system if you have problems, find bugs, or have improvement suggestions.
+12. Create a github issue at https://github.com/nametable/rpi-alarm-system if you have problems, find bugs, or have improvement suggestions.
