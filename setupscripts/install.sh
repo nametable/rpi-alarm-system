@@ -7,7 +7,7 @@ curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 sudo apt update
 sudo apt -y dist-upgrade
 #Install git, vlc, node
-sudo apy install -y nodejs git vlc
+sudo apt -y install nodejs git vlc
 #Clone the projects repo to home directory
 git clone https://github.com/nametable/rpi-alarm-system.git
 cd rpi-alarm-system
