@@ -48,16 +48,16 @@ module.exports = class events{
         cmd.run('cvlc "$(youtube-dl -f 140 -g ' + params[0] + ')"');
     }
     static playAudioFile(params){
-
+        cmd.run('cvlc "~/Music/' + params[0] + '"');
     }
     static updateSystem(params){
-
+        cmd.run('sudo apt update && sudo apt upgrade');
     }
     static eSpeak(params){
-
+        cmd.run('espeak "' + params[0] + '"');
     }
     static setVolume(params){
-
+        cmd.run('amixer set \'PCM\' ' + params[0]);
     }
     static comboEvent(params){
 
