@@ -44,20 +44,7 @@ settings.backupSchedule=config.master_backup_schedule_id;
 settings.controlSheet=config.master_control_gsheet_id;
 settings.refreshRate=config.update_frequency;
 settings.folder=config.master_folder_id;
-//*** Various tests of functions I made
-//var resp=sheet_maker.mk_schedule_spreadsheet(jwtClient, {spreadsheetId:"11EDYwgZH5qx9sybk0V0RAC9CSkXvzvYhy0HBTZ8IxdA"});
-//var resp=sheet_maker.mk_control_spreadsheet(jwtClient, {spreadsheetId:"11EDYwgZH5qx9sybk0V0RAC9CSkXvzvYhy0HBTZ8IxdA"});
-//var resp=sheet_reader.readSpreadsheet(jwtClient, "11EDYwgZH5qx9sybk0V0RAC9CSkXvzvYhy0HBTZ8IxdA");
-//var resp=sheet_maker.del_sheets_from_spreadsheet(jwtClient, "11EDYwgZH5qx9sybk0V0RAC9CSkXvzvYhy0HBTZ8IxdA");
-//var resp=sheet_reader.readSheet(jwtClient, "11EDYwgZH5qx9sybk0V0RAC9CSkXvzvYhy0HBTZ8IxdA", "SUN");
-//var resp = sheet_reader.getEventList(jwtClient, "11EDYwgZH5qx9sybk0V0RAC9CSkXvzvYhy0HBTZ8IxdA", (new Date()));
-//var resp= sheet_reader.getControlSheetSettings(jwtClient, "1-1TapEnaVPItnR7L1grG4OE8WZDW44e40XUcLGlLBKU");
-//var resp= sheet_reader.getModifiedTimestamp(jwtClient, "11EDYwgZH5qx9sybk0V0RAC9CSkXvzvYhy0HBTZ8IxdA");
-var resp= calendar_reader.getEventsDuringDay(jwtClient, "ukd69ks324no7cmaili3mnsbv0@group.calendar.google.com", new Date())
-var resp_value;
-resp.then(function(response) {
-  resp_value = response;
-});
+
 var currentDay=Date.today(); //today
 var lastTimestampControl; //timestamp of MasterControl Spreadsheet
 var lastTimestampSchedule;//timestamp of Schedule spreadsheet
@@ -70,6 +57,7 @@ var currentControlSettings;//current settings from control sheet
 var confirmedMasterControl=false, confirmedCalendar=false, confirmedSchedule=false;
 var needsupdateMasterControl=false, needsupdateCalendar=false, needsupdateSchedule=false;
 var rescheduleNeeded=false; //whether or not the alarms need to be rescheduled
+
 setInterval(function () { //main function which repeats every x seconds, specified in config.json
   console.log("Rechecking...");
   confirmedMasterControl=false, confirmedCalendar=false, confirmedSchedule=false;
@@ -80,10 +68,10 @@ setInterval(function () { //main function which repeats every x seconds, specifi
 }, settings.refreshRate*1000);
 
 
-var whatNext= function()
+var whatNext= function() //calls recursively when still loading needed information
 {
   if(!(needsupdateMasterControl | needsupdateCalendar | needsupdateSchedule) && (confirmedMasterControl && confirmedCalendar && confirmedSchedule)){
-    if(rescheduleNeeded){
+    if(rescheduleNeeded){ //only happens if something changed
       toastAlarms();
       scheduleAlarms();
     }
@@ -98,17 +86,18 @@ var whatNext= function()
             var getControlSettings= sheet_reader.getControlSheetSettings(jwtClient, settings.controlSheet);
             getControlSettings.then(function(response){
               if(currentControlSettings){
-                if(response.blankDaySchedule!=currentControlSettings.blankDaySchedule){
-                  //currentControlSettings=response;
-                  //if currentControlSettings.
-                  if(!code_parser.getScheduleFromCalendarEvents(currentEvents,currentControlSettings)){
-        
-                  }
-                }
                 if(!code_parser.getScheduleFromCalendarEvents(currentEvents,currentControlSettings)){
-                  console.log("No schedules in calendar. Need to use backup schedule.");
-                  lastUsedSchedule=code_parser.getId(currentControlSettings.backupSchedule, currentControlSettings);
-                  needsupdateSchedule=true;
+                  console.log("No schedules in calendar. Need to use blank day schedule.");
+                  if(currentControlSettings.blankDaySchedule){
+                    lastUsedSchedule=code_parser.getId(currentControlSettings.blankDaySchedule, currentControlSettings);
+                    needsupdateSchedule=true;
+                  }else{
+                    console.log("No blank day schedule. Need to use config.json backup schedule.")
+                    if(settings.backupSchedule){
+                      lastUsedSchedule=code_parser.getId(settings.backupSchedule, currentControlSettings);
+                      needsupdateSchedule=true;
+                    }
+                  }
                 }
               }else{
                 //Setting currentControlSettings for first time - need to update based on these settings
@@ -119,12 +108,26 @@ var whatNext= function()
                   lastUsedCalendar=code_parser.getId(currentControlSettings.curCal, currentControlSettings);
                   needsupdateCalendar=true;
                 }else{ //No calendar - use backup
-                  if(currentControlSettings.backupSchedule){
-                    console.error("No calendar... using backup.");
-                    lastUsedSchedule=code_parser.getId(currentControlSettings.backupSchedule, currentControlSettings);
-                    needsupdateSchedule=true;
-                  }else{
-                    console.error("No calendar and no backup schedule!");
+                  if(currentControlSettings.blankDaySchedule){
+                    console.error("No calendar... using blank day schedule.");
+                    if(currentControlSettings.blankDaySchedule){
+                      lastUsedSchedule=code_parser.getId(currentControlSettings.blankDaySchedule, currentControlSettings);
+                      needsupdateSchedule=true;
+                    }else{
+                      console.log("No blank day schedule. Need to use config.json backup schedule.")
+                      if(settings.backupSchedule){
+                        lastUsedSchedule=code_parser.getId(settings.master_backup_schedule_id, currentControlSettings);
+                        needsupdateSchedule=true;
+                      }
+                    }
+                    }else{
+                      if(settings.backupSchedule){
+                        console.log("Using backup schedule from config.json")
+                        lastUsedSchedule=code_parser.getId(settings.master_backup_schedule_id, currentControlSettings);
+                        needsupdateSchedule=true;
+                      }else{
+                        console.error("No calendar and no backup schedule!");
+                      }
                   }
                 }
               }
@@ -168,9 +171,14 @@ var whatNext= function()
         console.error("Error: can't get schedule sheet timestamp! -> " + error);
         if(config.master_backup_schedule_id){
           console.log("Trying to load backup schedule in config");
-          lastUsedSchedule=config.master_backup_schedule_id;
-          needsupdateSchedule=true;
-          whatNext();
+          if(lastUsedSchedule==config.master_backup_schedule_id){
+            console.log("Major problems - can't load backup schedule");
+            needsupdateSchedule=false;
+          }else{
+            lastUsedSchedule=config.master_backup_schedule_id;
+            needsupdateSchedule=true;
+            whatNext();
+          }
         }else{
           //Can't load any schedule at all, not even backup - maybe loss of inet
           console.error("Falling back to currently loaded schedule - basically offline");
@@ -198,7 +206,7 @@ var whatNext= function()
           if(currentControlSettings.blankDaySchedule){
             console.log("Using backup schedule")
             if (currentControlSettings.blankDaySchedule!=lastUsedSchedule){
-              console.log("Going to load in backup schedule: new");
+              console.log("Going to load in blank day schedule");
               lastUsedSchedule=currentControlSettings.blankDaySchedule;
             }
           }
@@ -256,9 +264,14 @@ function scheduleAlarms() //schedule the new alarms // curAlarms[i].time //new D
 }
 http.createServer(function(req, res){
   var Message;
+  Message="<html><center>\n";
+  Message+="The current time is <strong>" + (new Date()).toTimeString() + "</strong><br><br>\n";
+  Message+="<table><tr><th>Done?</th><th>Description</th><th>Time</th><th>Event</th</tr>";
   currentAlarmList.forEach(alarm => {
-    Message+="Alarm: " + alarm.Description + " @ " + alarm.Time + " -> " + alarm.Event + "\n";
+    var JobTime=new Date.today().at(alarm.Time);
+    Message+="<tr><td>"+ (JobTime < Date.now()).toString() + "</td><td>" + alarm.Description + "</td><td>" + alarm.Time + "</td><td>" + alarm.Event + "</td></tr>\n";
   });
-  res.writeHead(200, {'Content-Type': 'text/plain'});
+  Message+="</table></center><style>table{border: 1px solid #000000;}td,th{border: 1px solid #dddddd;}</style><br><br><br><br><br><center><strong>2018 - Logan Bateman - rpi-alarm-system<br><a href='https://github.com/nametable/rpi-alarm-system'>https://github.com/nametable/rpi-alarm-system</a></strong></center></html>"
+  res.writeHead(200, {'Content-Type': 'text/html'});
   res.end(Message);
 }).listen(8080);
