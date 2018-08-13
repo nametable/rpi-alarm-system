@@ -25,4 +25,4 @@ You can update the software that you have on your pi(or any computer for that ma
 
 ## Why can't the software do xyz?
 
-Well, if it can't do x, y, or z then I haven't implemented it yet. If you want you can contribute to the project by forking it and making some fixes.
+Well, if it can't do x, y, or z then I haven't implemented it yet. If you want you can contribute to the project by forking it and making some fixes/improvements.
