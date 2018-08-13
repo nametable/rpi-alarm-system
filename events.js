@@ -81,7 +81,7 @@ module.exports = class events{
         console.log("Running -> " + cmdstring);
     }
     static stopAudio(params){
-        var cmdstring='killall mplayer';
+        var cmdstring='killall vlc';
         cmd.run(cmdstring);
         console.log("Running -> " + cmdstring);
     }

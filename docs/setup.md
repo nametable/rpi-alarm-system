@@ -10,7 +10,7 @@
 - npm
 - pm2
 - git
-- mplayer
+- vlc
 - espeak
 
 ## Instructions
