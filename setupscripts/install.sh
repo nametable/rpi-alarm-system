@@ -21,6 +21,8 @@ sudo npm install pm2@latest -g
 pm2 start index.js --name rpi-alarm-system
 pm2 save
 pm2 stop 0
+pm2 install pm2-logrotate
+pm2 set pm2-logrotate:max_size 5000K
 echo "You will need to place your download your auth key as 'serviceaccountkey.js'"
 echo "You will also need to configure 'config.json'. Use config.json.sample to help"
 echo "More detailed instructions are at https://github.com/nametable/rpi-alarm-system/blob/master/docs/setup.md"
