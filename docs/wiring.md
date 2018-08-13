@@ -1,8 +1,8 @@
 # Wiring
 
-Wiring of the Pi is fairly straightforward. Pins 4 and 6 are 5v and ground respectively. Pin 3 (BCM 2), can be used as a GPIO output to control the relay. The relay can control a bell or anything really by acting as a switch.
+Wiring of the Pi is fairly straightforward. Pins 4 and 6 on the Raspberry Pi 3 are 5v and ground respectively. Pin 3 (BCM 2), can be used as a GPIO output to control the relay. The relay can control a bell or anything really by acting as a switch.
 ![Wiring Diagram](https://github.com/nametable/rpi-alarm-system/blob/master/docs/Pi_WiringDiagram.png)
-Below is the output from ```gpio readall```
+Below is the output from ```gpio readall``` which contains a nice pinout. This software uses SDA.1 as a digital output.
 ```
 +-----+-----+---------+------+---+---Pi 3---+---+------+---------+-----+-----+
  | BCM | wPi |   Name  | Mode | V | Physical | V | Mode | Name    | wPi | BCM |
