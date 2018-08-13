@@ -7,7 +7,7 @@ curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 sudo apt update
 sudo apt -y dist-upgrade
 #Install git, vlc, node, espeak
-sudo apt -y install nodejs git espeak mplayer python-pip
+sudo apt -y install nodejs git espeak mplayer python-pip vlc
 #Install youtube-dl
 sudo pip install youtube-dl
 #Setup time correctly
