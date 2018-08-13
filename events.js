@@ -49,12 +49,12 @@ module.exports = class events{
     static playYoutube(params){
         //This will find the audio stream of a youtube video and play it with cvlc
         //cvlc "$(/usr/local/bin/youtube-dl -f 140 -g https://www.youtube.com/watch?v=nQWFzMvCfLE)"
-        var cmdstring='mplayer "$(youtube-dl -f 140 -g ' + params[0] + ')"';
+        var cmdstring='setsid mplayer "$(youtube-dl -f 140 -g ' + params[0] + ')"';
         cmd.run(cmdstring);
         console.log("Running -> " + cmdstring);
     }
     static playAudioFile(params){
-        var cmdstring='mplayer ~/"Music/' + params[0] + '"';
+        var cmdstring='setsid mplayer ~/"Music/' + params[0] + '"';
         cmd.run(cmdstring);
         console.log("Running -> " + cmdstring);
     }
