@@ -15,3 +15,11 @@ EX1 - by name
 EX2 - by id
 1#11EDYwgZH5qx9sybk0V0RAC9CSkXvzvYhy0HBTZ8IxdA
 ``
+
+## Examples
+The following event specifies schedule by name and has a priority of 0.
+![Calendar Event with Schedule referenced by Variable](https://github.com/nametable/rpi-alarm-system/blob/master/docs/variable_cal_event.png)
+The following event specified schedule by id and has a priority of 1.
+![Calendar Event with Schedule referenced by ID](https://github.com/nametable/rpi-alarm-system/blob/master/docs/id_cal_event.png)
+In the following figure, the event called "Override" takes precedence on the 8th and 9th since it has a higher priority value. 1 > 0
+![Calendar Events with Overlap](https://github.com/nametable/rpi-alarm-system/blob/master/docs/cal_events.png)
