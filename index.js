@@ -264,9 +264,14 @@ function scheduleAlarms() //schedule the new alarms // curAlarms[i].time //new D
 }
 http.createServer(function(req, res){
   var Message;
+  Message="<html><center>\n";
+  Message+="The current time is <strong>" + (new Date()).toTimeString() + "</strong><br><br>\n";
+  Message+="<table><tr><th>Done?</th><th>Description</th><th>Time</th><th>Event</th</tr>";
   currentAlarmList.forEach(alarm => {
-    Message+="Alarm: " + alarm.Description + " @ " + alarm.Time + " -> " + alarm.Event + "\n";
+    var JobTime=new Date.today().at(alarm.Time);
+    Message+="<tr><td>"+ (JobTime < Date.now()).toString() + "</td><td>" + alarm.Description + "</td><td>" + alarm.Time + "</td><td>" + alarm.Event + "</td></tr>\n";
   });
-  res.writeHead(200, {'Content-Type': 'text/plain'});
+  Message+="</table></center><style>table{border: 1px solid #000000;}td,th{border: 1px solid #dddddd;}</style><br><br><br><br><br><center><strong>2018 - Logan Bateman - rpi-alarm-system<br><a href='https://github.com/nametable/rpi-alarm-system'>https://github.com/nametable/rpi-alarm-system</a></strong></center></html>"
+  res.writeHead(200, {'Content-Type': 'text/html'});
   res.end(Message);
 }).listen(8080);
