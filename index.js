@@ -116,14 +116,14 @@ var whatNext= function() //calls recursively when still loading needed informati
                     }else{
                       console.log("No blank day schedule. Need to use config.json backup schedule.")
                       if(settings.backupSchedule){
-                        lastUsedSchedule=code_parser.getId(settings.backupSchedule, currentControlSettings);
+                        lastUsedSchedule=code_parser.getId(settings.master_backup_schedule_id, currentControlSettings);
                         needsupdateSchedule=true;
                       }
                     }
                     }else{
                       if(settings.backupSchedule){
                         console.log("Using backup schedule from config.json")
-                        lastUsedSchedule=code_parser.getId(settings.backupSchedule, currentControlSettings);
+                        lastUsedSchedule=code_parser.getId(settings.master_backup_schedule_id, currentControlSettings);
                         needsupdateSchedule=true;
                       }else{
                         console.error("No calendar and no backup schedule!");
@@ -171,9 +171,14 @@ var whatNext= function() //calls recursively when still loading needed informati
         console.error("Error: can't get schedule sheet timestamp! -> " + error);
         if(config.master_backup_schedule_id){
           console.log("Trying to load backup schedule in config");
-          lastUsedSchedule=config.master_backup_schedule_id;
-          needsupdateSchedule=true;
-          whatNext();
+          if(lastUsedSchedule==config.master_backup_schedule_id){
+            console.log("Major problems - can't load backup schedule");
+            needsupdateSchedule=false;
+          }else{
+            lastUsedSchedule=config.master_backup_schedule_id;
+            needsupdateSchedule=true;
+            whatNext();
+          }
         }else{
           //Can't load any schedule at all, not even backup - maybe loss of inet
           console.error("Falling back to currently loaded schedule - basically offline");
@@ -201,7 +206,7 @@ var whatNext= function() //calls recursively when still loading needed informati
           if(currentControlSettings.blankDaySchedule){
             console.log("Using backup schedule")
             if (currentControlSettings.blankDaySchedule!=lastUsedSchedule){
-              console.log("Going to load in backup schedule: new");
+              console.log("Going to load in blank day schedule");
               lastUsedSchedule=currentControlSettings.blankDaySchedule;
             }
           }
