@@ -28,3 +28,9 @@ The following event specifies schedule by id and has a priority of 1.
 In the following figure, the event called "Override" takes precedence on the 8th and 9th since it has a higher priority value. 1 > 0
 
 ![Calendar Events with Overlap](https://github.com/nametable/rpi-alarm-system/blob/master/docs/cal_events.png)
+
+## Calendar ID
+
+The id of a Google Calendar can be found in the calendar's settings under integration. See the figure below.
+
+![Calendar id in settings]()(https://github.com/nametable/rpi-alarm-system/blob/master/docs/cal_settings.png)
