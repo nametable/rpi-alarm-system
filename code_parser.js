@@ -35,6 +35,7 @@ module.exports= class code_parser {
         }
       }
     }
+    if(calEventsSplit[highestIndex]==undefined){console.error("Bad calendar event list... no schedule found.");return null};
     if(calEventsSplit[highestIndex][1]==undefined){console.error("Bad calendar event list... no schedule found.");return null}else{if (!calEventsSplit[highestIndex][1]){return null;}}
     return this.getId(calEventsSplit[highestIndex][1],control_settings)
   }
