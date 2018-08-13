@@ -30,4 +30,5 @@ bash <(curl -s https://raw.githubusercontent.com/nametable/rpi-alarm-system/mast
 9. Make a new Google Calendar for scheduling
 10. Share all sheets and the calendar with your Google Service account - you should put your sheets in one folder so that the whole folder can be shared.
 11. Run "pm2 start rpi-alarm-system" to start the software.
-12. Create a github issue at https://github.com/nametable/rpi-alarm-system if you have problems, find bugs, or have improvement suggestions.
+12. Wire the pi using the diagram and instructions [here](./wiring.md).
+13. Create a github issue at https://github.com/nametable/rpi-alarm-system if you have problems, find bugs, or have improvement suggestions.
