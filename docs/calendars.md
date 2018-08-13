@@ -33,4 +33,4 @@ In the following figure, the event called "Override" takes precedence on the 8th
 
 The id of a Google Calendar can be found in the calendar's settings under integration. See the figure below.
 
-![Calendar id in settings]()(https://github.com/nametable/rpi-alarm-system/blob/master/docs/cal_settings.png)
+![Calendar id in settings](https://github.com/nametable/rpi-alarm-system/blob/master/docs/cal_settings.png)
