@@ -35,5 +35,5 @@ bash <(curl -s https://raw.githubusercontent.com/nametable/rpi-alarm-system/mast
 
 ## Additional Help at these pages: ##
 - [MasterControlSheets](./mastercontrol.md)
-[Schedules](./schedules.md)
-[Calendars](./calendars.md)
+- [Schedules](./schedules.md)
+- [Calendars](./calendars.md)
