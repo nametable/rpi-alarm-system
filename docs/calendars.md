@@ -21,7 +21,7 @@ The following event specifies schedule by name and has a priority of 0.
 
 ![Calendar Event with Schedule referenced by Variable](https://github.com/nametable/rpi-alarm-system/blob/master/docs/variable_cal_event.png)
 
-The following event specified schedule by id and has a priority of 1.
+The following event specifies schedule by id and has a priority of 1.
 
 ![Calendar Event with Schedule referenced by ID](https://github.com/nametable/rpi-alarm-system/blob/master/docs/id_cal_event.png)
 
