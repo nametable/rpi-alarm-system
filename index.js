@@ -271,7 +271,13 @@ http.createServer(function(req, res){
     var JobTime=new Date.today().at(alarm.Time);
     Message+="<tr><td>"+ (JobTime < Date.now()).toString() + "</td><td>" + alarm.Description + "</td><td>" + alarm.Time + "</td><td>" + alarm.Event + "</td></tr>\n";
   });
-  Message+="</table></center><style>table{border: 1px solid #000000;}td,th{border: 1px solid #dddddd;}</style><br><br><br><br><br><center><strong>2018 - Logan Bateman - rpi-alarm-system<br><a href='https://github.com/nametable/rpi-alarm-system'>https://github.com/nametable/rpi-alarm-system</a></strong></center></html>"
+  Message+="</table></center><style>table{border: 1px solid #000000;}td,th{border: 1px solid #dddddd;}</style><br><br>" + 
+    "<b>Backup Schedule ID:</b><p>" + settings.backupSchedule + "</p><br>" +
+    "<b>Control Sheet ID:</b><p>" + settings.controlSheet + "</p><br>" +
+    "<b>Refresh Rate:</b><p>" + settings.refreshRate + "</p><br>" +
+    "<b>Control Sheet Timestamp:</b><p>" + settings.controlSheet + "</p><br>" +
+    "<b>Schedule Timestamp:</b><p>" + settings.refreshRate + "</p><br>" +
+  "<br><br><br><center><strong>2018 - Logan Bateman - rpi-alarm-system<br><a href='https://github.com/nametable/rpi-alarm-system'>https://github.com/nametable/rpi-alarm-system</a></strong></center></html>"
   res.writeHead(200, {'Content-Type': 'text/html'});
   res.end(Message);
 }).listen(8080);
